@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Confirmar Eliminación</h2>
+<p>¿Estás seguro que deseas eliminar esta cita?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'cita_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

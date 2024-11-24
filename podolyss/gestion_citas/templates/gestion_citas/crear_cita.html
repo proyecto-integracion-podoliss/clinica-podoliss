@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Crear Cita</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label for="id_profesional" class="form-label">Profesional</label>
+            {{ form.profesional }}
+        </div>
+        <div class="mb-3">
+            <label for="id_fecha_cita" class="form-label">Fecha de la Cita</label>
+            {{ form.fecha_cita }}
+        </div>
+        <div class="mb-3">
+            <label for="id_hora_cita" class="form-label">Hora de la Cita</label>
+            {{ form.hora_cita }}
+        </div>
+        {% if form.observaciones %}
+        <div class="mb-3">
+            <label for="id_observaciones" class="form-label">Observaciones</label>
+            {{ form.observaciones }}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Confirmar Cita</button>
+    </form>
+</div>
+{% endblock %}

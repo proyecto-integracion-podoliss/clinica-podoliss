@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{% if object %}Editar Datos Personales{% else %}Completar Datos Personales{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.tipo_documento.label_tag }}
+            {{ form.tipo_documento }}
+        </div>
+        <div class="mb-3">
+            {{ form.documento.label_tag }}
+            {{ form.documento }}
+        </div>
+        <div class="mb-3">
+            {{ form.prevision.label_tag }}
+            {{ form.prevision }}
+        </div>
+        <button type="submit" class="btn btn-primary">{% if object %}Guardar Cambios{% else %}Crear Datos{% endif %}</button>
+    </form>
+</div>
+{% endblock %}

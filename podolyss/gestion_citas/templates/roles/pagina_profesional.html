@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Panel del Profesional</h1>
+    <p>Gestión de pacientes y agenda.</p>
+</div>
+<div class="container mt-5">
+    <h1>Panel del Profesional</h1>
+    <p>Gestión de pacientes y agenda.</p>
+    <a href="{% url 'crear_agenda' %}" class="btn btn-success">Crear Nueva Agenda</a>
+</div>
+<a href="{% url 'agenda_list' %}" class="btn btn-secondary">Mis Agendas</a>
+{% endblock %}

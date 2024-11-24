@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuario, Paciente, Profesional, Administrador, Cita, Agenda, HistorialClinico, Notificacion, Auditoria, Centro
+from .models import Usuario, Paciente, Profesional, Administrador, Cita, Agenda, HistorialClinico, Notificacion, Auditoria, Centro, Prevision, TipoDocumento
 
 # Personalización del administrador para el modelo Usuario
 @admin.register(Usuario)
@@ -48,7 +48,7 @@ class AdministradorAdmin(admin.ModelAdmin):
 # Registro de Citas
 @admin.register(Cita)
 class CitaAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'profesional', 'centro', 'fecha_hora', 'estado', 'capacidad_disponible')
+    list_display = ('paciente', 'profesional', 'centro', 'fecha_hora', 'estado')
     list_filter = ('estado', 'fecha_cita', 'centro', 'profesional')
     search_fields = ('paciente__usuario__username', 'profesional__usuario__username', 'centro__nombre')
     date_hierarchy = 'fecha_cita'
@@ -95,3 +95,17 @@ class CentroAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'direccion', 'telefono')
     search_fields = ('nombre', 'direccion')
     list_filter = ('nombre',)
+
+
+# Registro de Prevision
+@admin.register(Prevision)
+class PrevisionAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+
+# Registro de TipoDocumento
+@admin.register(TipoDocumento)
+class TipoDocumentoAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)

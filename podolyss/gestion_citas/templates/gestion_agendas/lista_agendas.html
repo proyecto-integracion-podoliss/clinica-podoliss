@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Mis Agendas</h2>
+
+    {% if agendas %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora de Inicio</th>
+                    <th>Hora de Fin</th>
+                    <th>Días Disponibles</th>
+                    <th>Capacidad Máxima</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agenda in agendas %}
+                    <tr>
+                        <td>{{ agenda.fecha_inicio }} - {{ agenda.fecha_fin }}</td>
+                        <td>{{ agenda.hora_inicio }}</td>
+                        <td>{{ agenda.hora_fin }}</td>
+                        <td>{{ agenda.dias_disponibles }}</td>
+                        <td>{{ agenda.capacidad_maxima }}</td>
+                        <td>{{ agenda.activo|yesno:"Activa,Inactiva" }}</td>
+                        <td>
+                            <a href="{% url 'agenda_edit' agenda.id %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'agenda_delete' agenda.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes agendas creadas.</p>
+    {% endif %}
+
+    <a href="{% url 'crear_agenda' %}" class="btn btn-primary">Crear Nueva Agenda</a>
+</div>
+{% endblock %}

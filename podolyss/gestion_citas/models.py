@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+import uuid
 
 # Modelo de usuario personalizado
 class Usuario(AbstractUser):
@@ -51,6 +51,11 @@ class Paciente(models.Model):
     documento = models.CharField(max_length=20, unique=True, verbose_name="Documento de Identidad")
     tipo_documento = models.ForeignKey(TipoDocumento, on_delete=models.CASCADE, verbose_name="Tipo de Documento")
     prevision = models.ForeignKey(Prevision, on_delete=models.CASCADE, verbose_name="Previsión de Salud")
+
+    def save(self, *args, **kwargs):
+        if not self.nhc:  # Generar NHC solo si no existe
+            self.nhc = f"NHC-{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Paciente: {self.usuario.get_full_name()} ({self.nhc})"
@@ -104,6 +109,7 @@ class Agenda(models.Model):
 class Cita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name='citas')
     profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name='citas')
+    agenda = models.ForeignKey(Agenda, on_delete=models.CASCADE, related_name='citas', null=True, blank=True)
     centro = models.ForeignKey(Centro, on_delete=models.CASCADE, related_name='citas', verbose_name="Centro")
     estado = models.CharField(
         max_length=20,
@@ -118,12 +124,20 @@ class Cita(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     fecha_cita = models.DateField(verbose_name="Fecha de la Cita")
     hora_cita = models.TimeField(verbose_name="Hora de la Cita")
-    capacidad_disponible = models.PositiveIntegerField(default=1, verbose_name="Capacidad Disponible")
     observaciones = models.TextField(null=True, blank=True, verbose_name="Observaciones")
-    disponible = models.BooleanField(default=True, verbose_name="Disponible")
 
-    def __str__(self):
-        return f"Cita de {self.paciente} con {self.profesional} ({self.fecha_cita} {self.hora_cita})"
+    def save(self, *args, **kwargs):
+        # Validar capacidad disponible
+        agenda = Agenda.objects.filter(
+            profesional=self.profesional,
+            activo=True,
+            fecha_inicio__lte=self.fecha_cita,
+            fecha_fin__gte=self.fecha_cita
+        ).first()
+        if not agenda:
+            raise ValueError("El profesional no tiene una agenda activa para la fecha seleccionada.")
+
+        super().save(*args, **kwargs)   
 
 
 # Modelo para notificaciones
