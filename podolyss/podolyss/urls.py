@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from gestion_citas.views import LandingPageView, CustomLoginView, RegistroView, PacienteView, ProfesionalView, AgendaListView, CrearAgendaView, AgendaUpdateView, AgendaDeleteView, CitaCreateView, PacienteCreateView, PacienteUpdateView,PacienteHistorialCitasView,ProfesionalHistorialAgendasView, CitaListView, CitaUpdateView, CitaDeleteView
+from gestion_citas.views import CitaCreateByProfesionalView, LandingPageView, CustomLoginView, RegistroView, PacienteView, ProfesionalView, AgendaListView, CrearAgendaView, AgendaUpdateView, AgendaDeleteView, CitaCreateView, PacienteCreateView, PacienteUpdateView,PacienteHistorialCitasView,ProfesionalHistorialAgendasView, CitaListView, CitaUpdateView, CitaDeleteView
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -23,4 +23,5 @@ urlpatterns = [
     path('citas/<int:pk>/eliminar/', CitaDeleteView.as_view(), name='cita_delete'),
     path('historial/paciente/', PacienteHistorialCitasView.as_view(), name='historial_citas_paciente'),
     path('historial/profesional/', ProfesionalHistorialAgendasView.as_view(), name='historial_citas_profesional'),
+    path('profesional/crear-cita/', CitaCreateByProfesionalView.as_view(), name='crear_cita_profesional'),
 ]

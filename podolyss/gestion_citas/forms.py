@@ -87,3 +87,33 @@ class CitaForm(forms.ModelForm):
         if self.user and self.user.rol != 'profesional' and 'observaciones' in self.fields:
             self.fields.pop('observaciones')
     
+class CitaFormProfesional(forms.ModelForm):
+    buscar_paciente = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Buscar paciente (nombre o documento)'}),
+        label="Buscar Paciente"
+    )
+
+    class Meta:
+        model = Cita
+        fields = ['paciente', 'fecha_cita', 'hora_cita', 'observaciones', 'estado']
+        widgets = {
+            'paciente': forms.Select(attrs={'class': 'form-control'}),
+            'fecha_cita': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora_cita': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Añadir observaciones'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Capturamos el usuario
+        super().__init__(*args, **kwargs)
+
+        # Limitar los pacientes disponibles al profesional
+        if 'paciente' in self.fields:
+            self.fields['paciente'].queryset = Paciente.objects.all()
+
+    def clean_buscar_paciente(self):
+        # Implementar lógica de búsqueda de pacientes si es necesario
+        buscar_paciente = self.cleaned_data.get('buscar_paciente')
+        return buscar_paciente

@@ -18,6 +18,8 @@
             {{ form.prevision }}
         </div>
         <button type="submit" class="btn btn-primary">{% if object %}Guardar Cambios{% else %}Crear Datos{% endif %}</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
+
     </form>
 </div>
 {% endblock %}
