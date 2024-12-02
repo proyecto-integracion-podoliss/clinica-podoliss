@@ -1,13 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5">
-    <h1>Panel del Profesional</h1>
-    <p>Gestión de pacientes y agenda.</p>
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary">Panel del Profesional</h1>
+        <p class="lead text-muted">Gestiona eficientemente tus citas, agendas y pacientes.</p>
+    </div>
+
+    <div class="row">
+        <!-- Tarjeta de Citas -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-primary shadow">
+                <div class="card-body text-center">
+                    <i class="bi bi-list-task display-3 text-primary"></i>
+                    <h5 class="card-title mt-3">Citas</h5>
+                    <p class="card-text text-muted">Consulta y gestiona las citas programadas con tus pacientes.</p>
+                    <a href="{% url 'cita_list' %}" class="btn btn-primary">Ver Citas</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Crear Agenda -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-success shadow">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-plus display-3 text-success"></i>
+                    <h5 class="card-title mt-3">Crear Nueva Agenda</h5>
+                    <p class="card-text text-muted">Organiza tus horarios y establece tu disponibilidad.</p>
+                    <a href="{% url 'crear_agenda' %}" class="btn btn-success">Crear Agenda</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Mis Agendas -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-secondary shadow">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar2-event display-3 text-secondary"></i>
+                    <h5 class="card-title mt-3">Mis Agendas</h5>
+                    <p class="card-text text-muted">Consulta, edita o elimina tus agendas existentes.</p>
+                    <a href="{% url 'agenda_list' %}" class="btn btn-secondary">Ver Agendas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <p class="text-muted">¿Necesitas ayuda? Contáctanos en soporte@podoliss.com</p>
+    </div>
 </div>
-<div class="container mt-5">
-    <h1>Panel del Profesional</h1>
-    <p>Gestión de pacientes y agenda.</p>
-    <a href="{% url 'crear_agenda' %}" class="btn btn-success">Crear Nueva Agenda</a>
-</div>
-<a href="{% url 'agenda_list' %}" class="btn btn-secondary">Mis Agendas</a>
 {% endblock %}

@@ -46,16 +46,29 @@ class AdministradorAdmin(admin.ModelAdmin):
     search_fields = ('usuario__username', 'usuario__email')
 
 # Registro de Citas
+from django.contrib import admin
+from django.core.mail import send_mail
+from .models import Cita
+
 @admin.register(Cita)
 class CitaAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'profesional', 'centro', 'fecha_hora', 'estado')
-    list_filter = ('estado', 'fecha_cita', 'centro', 'profesional')
-    search_fields = ('paciente__usuario__username', 'profesional__usuario__username', 'centro__nombre')
-    date_hierarchy = 'fecha_cita'
+    list_display = ('paciente', 'profesional', 'centro', 'fecha_hora', 'estado')  # Mostrar columnas en el admin
+    list_filter = ('estado', 'fecha_cita', 'centro', 'profesional')  # Filtros
+    search_fields = ('paciente__usuario__username', 'profesional__usuario__username', 'centro__nombre')  # Búsqueda
+    date_hierarchy = 'fecha_cita'  # Navegación por fechas
+    list_editable = ('estado',)  # Permitir edición del estado directamente desde la lista
 
     @admin.display(description='Fecha y Hora')
     def fecha_hora(self, obj):
         return f"{obj.fecha_cita} {obj.hora_cita}"
+
+   
+
+    
+
+       
+
+
 
 # Registro de Agenda
 @admin.register(Agenda)
