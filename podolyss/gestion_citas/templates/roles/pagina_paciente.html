@@ -1,41 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5">
-    <div class="text-center mb-4">
-        <h1 class="display-4">Panel del Paciente</h1>
-        <p class="lead">Gestiona tus citas y datos personales de forma fácil y rápida.</p>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar-check display-4 text-primary"></i>
-                    <h5 class="card-title mt-3">Agendar Cita</h5>
-                    <p class="card-text">Programa una cita con nuestros profesionales en unos pocos pasos.</p>
-                    <a href="{% url 'cita_create' %}" class="btn btn-primary">Agendar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-person-lines-fill display-4 text-info"></i>
-                    <h5 class="card-title mt-3">Datos Personales</h5>
-                    <p class="card-text">Consulta o actualiza la información de tu perfil.</p>
-                    <a href="{% if user.paciente %}{% url 'editar_paciente' %}{% else %}{% url 'crear_paciente' %}{% endif %}" class="btn btn-info">Gestionar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-list-task display-4 text-success"></i>
-                    <h5 class="card-title mt-3">Mis Citas</h5>
-                    <p class="card-text">Consulta el historial de todas tus citas programadas.</p>
-                    <a href="{% url 'cita_list' %}" class="btn btn-success">Ver Citas</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1>Bienvenido, {{ user.get_full_name }}</h1>
+    <p>Aquí puedes gestionar tu información y ver tus citas.</p>
+    <a href="{% url 'cita_create' %}" class="btn btn-primary">Agendar Cita</a>
+    <a href="{% if user.paciente %}{% url 'editar_paciente' %}{% else %}{% url 'crear_paciente' %}{% endif %}" class="btn btn-info">Datos Personales</a>
+    <a href="{% url 'cita_list' %}" class="btn btn-primary btn-lg">Ver todas mis citas</a>
+    <a href="{% url 'historial_citas_paciente' %}" class="btn btn-secondary">Ver Historial de Citas</a>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
 </div>
 {% endblock %}

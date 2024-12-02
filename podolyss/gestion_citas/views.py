@@ -6,10 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from .forms import RegistroForm, AgendaForm, CitaForm, PacienteForm
 from .models import Agenda, Cita, Paciente, Profesional, Centro
-#Mensajeria
-from django.shortcuts import render, redirect
-from .models import Cita
-from .forms import CitaForm  # Crea un formulario basado en el modelo Cita
+from datetime import datetime
 
 class LandingPageView(TemplateView):
     template_name = "landing_page.html"
@@ -70,12 +67,9 @@ class PacienteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'roles/editar_paciente.html'
     success_url = reverse_lazy('pagina_paciente')
 
-    
     def get_object(self):
-        try:
-            return self.request.user.paciente  # Obtiene el paciente relacionado
-        except Paciente.DoesNotExist:
-            raise Http404("No tienes un perfil de paciente asociado.")
+        return get_object_or_404(Paciente, usuario=self.request.user)
+    
 
 class ProfesionalView(LoginRequiredMixin, TemplateView):
     template_name = 'roles/pagina_profesional.html'
@@ -164,9 +158,9 @@ class CitaCreateView(CreateView):
 
 class CitaUpdateView(UpdateView):
     model = Cita
-    form_class = CitaForm
+    fields = ['fecha_cita', 'hora_cita', 'observaciones', 'estado']
     template_name = 'gestion_citas/editar_cita.html'
-    success_url = '/citas/list/'
+    success_url = '/citas/list/'  # Redirige a la lista de citas después de editar
 
     def get_queryset(self):
         user = self.request.user
@@ -175,13 +169,6 @@ class CitaUpdateView(UpdateView):
         elif user.rol == 'profesional':
             return Cita.objects.filter(profesional__usuario=user)
         return Cita.objects.none()
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Pasar el usuario al formulario
-        return kwargs
-
-
     
 
 class CitaDeleteView(DeleteView):
@@ -197,7 +184,62 @@ class CitaDeleteView(DeleteView):
             return Cita.objects.filter(profesional__usuario=user)
         return Cita.objects.none()
     
+class PacienteHistorialCitasView(LoginRequiredMixin, ListView):
+    model = Cita
+    template_name = 'gestion_citas/historialpac.html'
+    context_object_name = 'citas'
+    paginate_by = 10  # Añadir esta línea
 
-#Mensajeria
+    def get_queryset(self):
+        # Filtra las citas para el paciente autenticado
+        queryset = Cita.objects.filter(paciente__usuario=self.request.user).distinct().order_by('fecha_cita', 'hora_cita')
+        # Filtro por mes si se proporciona
+        mes = self.request.GET.get('mes')
+        if mes:
+            try:
+                mes = int(mes)
+                queryset = queryset.filter(fecha_cita__month=mes)
+            except ValueError:
+                pass
+        return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meses'] = [
+            (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
+            (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
+            (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
+        ]
+        context['paginacion'] = True
+        return context
 
+class ProfesionalHistorialAgendasView(LoginRequiredMixin, ListView):
+    model = Agenda
+    template_name = 'gestion_citas/historialprof.html'
+    context_object_name = 'agendas'
+
+    def get_queryset(self):
+        # Filtra las agendas para el profesional autenticado
+        profesional = Profesional.objects.get(usuario=self.request.user)
+        queryset = Agenda.objects.filter(profesional=profesional).distinct().order_by('fecha_inicio', 'hora_inicio')
+        
+        # Filtro por mes si se proporciona
+        mes = self.request.GET.get('mes')
+        if mes:
+            try:
+                mes = int(mes)
+                queryset = queryset.filter(fecha_inicio__month=mes)
+            except ValueError:
+                pass
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meses'] = [
+            (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
+            (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
+            (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
+        ]
+        return context
+        
