@@ -1,29 +1,30 @@
 import environ
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Inicializar el entorno
+# Inicializa django-environ
 env = environ.Env(
-    DEBUG=(bool, False)  # Por defecto, DEBUG es False
+    # Establece valores predeterminados para evitar errores
+    DEBUG=(bool, False)
 )
 
-# Leer las variables del archivo .env
-environ.Env.read_env(str(BASE_DIR / ".env"))
+# Lee el archivo .env
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 
-DEBUG = env('DEBUG')
-SECRET_KEY = env('SECRET_KEY')
-
-
-ALLOWED_HOSTS = []
+# Configuración de variables de entorno
+SECRET_KEY = env('SECRET_KEY')  # Obligatorio
+DEBUG = env.bool('DEBUG', default=False)
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 
 
 # Application definition
@@ -82,7 +83,6 @@ DATABASES = {
         'PORT': env('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
