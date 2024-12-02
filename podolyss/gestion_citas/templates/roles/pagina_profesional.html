@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5">
-    <h1>Panel del Profesional</h1>
-    <p>Gestión de pacientes y agenda.</p>
-</div>
-<div class="container mt-5">
-    <h1>Panel del Profesional</h1>
-    <p>Gestión de pacientes y agenda.</p>
+    <h1>Bienvenido, {{ user.get_full_name }}</h1>
+    <p>Aquí puedes gestionar tus agendas y ver las citas de tus pacientes.</p>
     <a href="{% url 'crear_agenda' %}" class="btn btn-success">Crear Nueva Agenda</a>
+    <a href="{% url 'agenda_list' %}" class="btn btn-secondary">Mis Agendas</a>
+    <a href="{% url 'historial_citas_profesional' %}" class="btn btn-secondary">Ver Historial de Citas</a>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
 </div>
-<a href="{% url 'agenda_list' %}" class="btn btn-secondary">Mis Agendas</a>
 {% endblock %}

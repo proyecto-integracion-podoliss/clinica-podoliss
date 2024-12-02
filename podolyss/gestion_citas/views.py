@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from .forms import RegistroForm, AgendaForm, CitaForm, PacienteForm
 from .models import Agenda, Cita, Paciente, Profesional, Centro
-
+from datetime import datetime
 
 class LandingPageView(TemplateView):
     template_name = "landing_page.html"
@@ -183,3 +183,58 @@ class CitaDeleteView(DeleteView):
         elif user.rol == 'profesional':
             return Cita.objects.filter(profesional__usuario=user)
         return Cita.objects.none()
+    
+class PacienteHistorialCitasView(LoginRequiredMixin, ListView):
+    model = Cita
+    template_name = 'gestion_citas/historialpac.html'
+    context_object_name = 'citas'
+
+    def get_queryset(self):
+        # Filtra las citas para el paciente autenticado
+        queryset = Cita.objects.filter(paciente__usuario=self.request.user).order_by('fecha_cita', 'hora_cita')
+        # Filtro por mes si se proporciona
+        mes = self.request.GET.get('mes')
+        if mes:
+            try:
+                mes = int(mes)
+                queryset = queryset.filter(fecha_cita__month=mes)
+            except ValueError:
+                pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meses'] = [
+            (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
+            (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
+            (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
+        ]
+        return context
+
+class ProfesionalHistorialCitasView(LoginRequiredMixin, ListView):
+    model = Cita
+    template_name = 'gestion_citas/historialprof.html'
+    context_object_name = 'citas'
+
+    def get_queryset(self):
+        # Filtra las citas para el profesional autenticado
+        queryset = Cita.objects.filter(profesional__usuario=self.request.user).order_by('fecha_cita', 'hora_cita')
+        # Filtro por mes si se proporciona
+        mes = self.request.GET.get('mes')
+        if mes:
+            try:
+                mes = int(mes)
+                queryset = queryset.filter(fecha_cita__month=mes)
+            except ValueError:
+                pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meses'] = [
+            (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
+            (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
+            (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
+        ]
+        return context
+        
