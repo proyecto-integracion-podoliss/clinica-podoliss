@@ -306,13 +306,22 @@ class CitaCreateByProfesionalView(CreateView):
         return kwargs
 
     def form_valid(self, form):
-        # Asociar automáticamente el profesional y el centro
-        form.instance.profesional = self.request.user.profesional
-        form.instance.centro = Centro.objects.first()  # Asignar el único centro
-        return super().form_valid(form)
+        try:
+            # Asociar automáticamente el profesional y el centro
+            form.instance.profesional = self.request.user.profesional
+            form.instance.centro = Centro.objects.first()  # Asignar el único centro
+            form.save()
+            messages.success(self.request, "La cita se creó correctamente.")
+            return super().form_valid(form)
+        except Exception as e:
+            messages.error(self.request, f"Error al crear la cita: {str(e)}")
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def form_invalid(self, form):
+        # Asegúrate de que solo se añada el mensaje de error si el formulario es inválido
+        messages.error(self.request, "Error al crear la cita. Por favor, revisa los datos ingresados.")
+        return super().form_invalid(form)
 
     def get_success_url(self):
-        # Redirigir a la página del profesional
         return reverse_lazy('pagina_profesional')
-    
     

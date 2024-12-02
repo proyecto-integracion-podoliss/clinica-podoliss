@@ -88,11 +88,6 @@ class CitaForm(forms.ModelForm):
             self.fields.pop('observaciones')
     
 class CitaFormProfesional(forms.ModelForm):
-    buscar_paciente = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Buscar paciente (nombre o documento)'}),
-        label="Buscar Paciente"
-    )
 
     class Meta:
         model = Cita
@@ -114,6 +109,6 @@ class CitaFormProfesional(forms.ModelForm):
             self.fields['paciente'].queryset = Paciente.objects.all()
 
     def clean_buscar_paciente(self):
-        # Implementar lógica de búsqueda de pacientes si es necesario
         buscar_paciente = self.cleaned_data.get('buscar_paciente')
+        # Aquí puedes implementar lógica para filtrar pacientes basándote en el término buscado
         return buscar_paciente

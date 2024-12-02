@@ -1,37 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Mis Citas</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Profesional/Paciente</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for cita in citas %}
-        <tr>
-            <td>{{ cita.fecha_cita }}</td>
-            <td>{{ cita.hora_cita }}</td>
-            <td>
-                {% if user.rol == 'paciente' %}
-                    {{ cita.profesional.usuario.get_full_name }}
-                {% elif user.rol == 'profesional' %}
-                    {{ cita.paciente.usuario.get_full_name }}
-                {% endif %}
-            </td>
-            <td>{{ cita.estado }}</td>
-            <td>
-                <a href="{% url 'cita_edit' cita.pk %}" class="btn btn-primary btn-sm">Editar</a>
-                <a href="{% url 'cita_delete' cita.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-    <a href="{% url 'pagina_paciente' %}">Volver a la página principal</a>
+<div class="container">
+    <h2>Mis Citas</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Profesional/Paciente</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.fecha_cita }}</td>
+                <td>{{ cita.hora_cita }}</td>
+                <td>
+                    {% if user.rol == 'paciente' %}
+                        {{ cita.profesional.usuario.get_full_name }}
+                    {% elif user.rol == 'profesional' %}
+                        {{ cita.paciente.usuario.get_full_name }}
+                    {% endif %}
+                </td>
+                <td>{{ cita.estado }}</td>
+                <td>
+                    <a href="{% url 'cita_edit' cita.pk %}" class="btn btn-primary btn-sm">Editar</a>
+                    <a href="{% url 'cita_delete' cita.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'pagina_paciente' %}" class="btn btn-secondary">Volver a la página principal</a>
+</div>
+
 {% endblock %}

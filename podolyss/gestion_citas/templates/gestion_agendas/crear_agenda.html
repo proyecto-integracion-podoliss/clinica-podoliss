@@ -2,12 +2,31 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Crear Nueva Agenda</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Crear Agenda</button>
-        <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
-    </form>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Crear Nueva Agenda</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success me-4">Crear Agenda</button>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

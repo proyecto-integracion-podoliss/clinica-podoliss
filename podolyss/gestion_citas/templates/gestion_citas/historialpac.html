@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content-container">
+<div class="container">
     <h1>Historial de Citas del Paciente</h1>
-    <form method="get" action="">
+    <form method="get" action="" class="mb-3">
         <label for="mes">Filtrar por mes:</label>
         <select name="mes" id="mes">
             <option value="" disabled selected>Seleccione un mes</option>
@@ -39,8 +39,10 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <a href="{% url 'pagina_paciente' %}" class="btn btn-secondary">Volver a la página principal</a>
 </div>
-    <a href="{% url 'pagina_paciente' %}">Volver a la página principal</a>
-    <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
+   
+
 
 {% endblock %}

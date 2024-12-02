@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content-container">
+<div class="container">
     <h2>Historial de Agendas del Profesional</h2>
     <form method="get" action="">
-        <label for="mes">Filtrar por mes:</label>
+        <label class="mb-3" for="mes">Filtrar por mes:</label>
         <select name="mes" id="mes">
             <option value="">Todos</option>
             {% for mes_num, mes_nombre in meses %}
@@ -46,8 +46,8 @@
             {% endif %}
         </tbody>
     </table>
+    <a href="{% url 'pagina_profesional' %}" class="btn btn-secondary">Volver a la página principal</a>
 </div>
-    <a href="{% url 'pagina_profesional' %}">Volver a la página principal</a>
-    <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
+    
 
 {% endblock %}

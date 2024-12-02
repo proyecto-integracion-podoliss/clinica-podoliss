@@ -1,36 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="container">
-    <h1>Crear Cita</h1>
-    <form method="post">
-        {% csrf_token %}
-
-        <div class="mb-3">
-            {{ form.paciente.label_tag }}
-            {{ form.paciente }}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Crear Cita</h2>
         </div>
-        <div class="mb-3">
-            {{ form.fecha_cita.label_tag }}
-            {{ form.fecha_cita }}
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success me-4">Confirmar Cita</button>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            {{ form.hora_cita.label_tag }}
-            {{ form.hora_cita }}
-        </div>
-        <div class="mb-3">
-            {{ form.observaciones.label_tag }}
-            {{ form.observaciones }}
-        </div>
-        <div class="mb-3">
-            {{ form.estado.label_tag }}
-            {{ form.estado }}
-        </div>
-        <button type="submit" class="btn btn-primary">Confirmar Cita</button>
-    </form>
-    <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
-
+    </div>
 </div>
-
 {% endblock %}
