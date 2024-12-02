@@ -61,21 +61,29 @@ class AgendaForm(forms.ModelForm):
 class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita
-        fields = ['profesional', 'fecha_cita', 'hora_cita', 'observaciones']  # Incluimos 'profesional'
+        fields = ['profesional', 'fecha_cita', 'hora_cita', 'observaciones', 'estado']
         widgets = {
             'profesional': forms.Select(attrs={'class': 'form-control'}),
             'fecha_cita': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'hora_cita': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Añadir observaciones'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)  # Capturamos el usuario
         super().__init__(*args, **kwargs)
 
-        # Ocultar observaciones si no es profesional
-        if self.user and self.user.rol != 'profesional':
-            self.fields.pop('observaciones')
+        # Ocultar el campo 'estado' si el usuario no es profesional ni administrador
+        if self.user and self.user.rol not in ['profesional', 'administrador']:
+            self.fields.pop('estado')
 
-        # Filtrar los profesionales disponibles
-        self.fields['profesional'].queryset = Profesional.objects.all()
+        # Validar antes de acceder al campo 'profesional'
+        if 'profesional' in self.fields:
+            # Filtrar los profesionales disponibles
+            self.fields['profesional'].queryset = Profesional.objects.all()
+
+        # Ocultar observaciones si no es profesional
+        if self.user and self.user.rol != 'profesional' and 'observaciones' in self.fields:
+            self.fields.pop('observaciones')
+    
