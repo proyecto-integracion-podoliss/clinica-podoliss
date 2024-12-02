@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="content-container">
     <h1>Historial de Citas del Paciente</h1>
     <form method="get" action="">
         <label for="mes">Filtrar por mes:</label>
@@ -14,7 +15,7 @@
         <button type="submit">Filtrar</button>
     </form>
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -38,6 +39,6 @@
             {% endfor %}
         </tbody>
     </table>
-
+</div>
     <a href="{% url 'pagina_paciente' %}">Volver a la página principal</a>
 {% endblock %}

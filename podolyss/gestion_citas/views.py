@@ -188,10 +188,11 @@ class PacienteHistorialCitasView(LoginRequiredMixin, ListView):
     model = Cita
     template_name = 'gestion_citas/historialpac.html'
     context_object_name = 'citas'
+    paginate_by = 10  # Añadir esta línea
 
     def get_queryset(self):
         # Filtra las citas para el paciente autenticado
-        queryset = Cita.objects.filter(paciente__usuario=self.request.user).order_by('fecha_cita', 'hora_cita')
+        queryset = Cita.objects.filter(paciente__usuario=self.request.user).distinct().order_by('fecha_cita', 'hora_cita')
         # Filtro por mes si se proporciona
         mes = self.request.GET.get('mes')
         if mes:
@@ -209,24 +210,28 @@ class PacienteHistorialCitasView(LoginRequiredMixin, ListView):
             (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
             (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
         ]
+        context['paginacion'] = True
         return context
 
-class ProfesionalHistorialCitasView(LoginRequiredMixin, ListView):
-    model = Cita
+class ProfesionalHistorialAgendasView(LoginRequiredMixin, ListView):
+    model = Agenda
     template_name = 'gestion_citas/historialprof.html'
-    context_object_name = 'citas'
+    context_object_name = 'agendas'
 
     def get_queryset(self):
-        # Filtra las citas para el profesional autenticado
-        queryset = Cita.objects.filter(profesional__usuario=self.request.user).order_by('fecha_cita', 'hora_cita')
+        # Filtra las agendas para el profesional autenticado
+        profesional = Profesional.objects.get(usuario=self.request.user)
+        queryset = Agenda.objects.filter(profesional=profesional).distinct().order_by('fecha_inicio', 'hora_inicio')
+        
         # Filtro por mes si se proporciona
         mes = self.request.GET.get('mes')
         if mes:
             try:
                 mes = int(mes)
-                queryset = queryset.filter(fecha_cita__month=mes)
+                queryset = queryset.filter(fecha_inicio__month=mes)
             except ValueError:
                 pass
+        
         return queryset
 
     def get_context_data(self, **kwargs):
