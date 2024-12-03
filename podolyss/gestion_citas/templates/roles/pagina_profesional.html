@@ -1,12 +1,62 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="container mt-5">
-    <h1>Bienvenido, {{ user.get_full_name }}</h1>
-    <p>Aquí puedes gestionar tus agendas y ver las citas de tus pacientes.</p>
-    <a href="{% url 'crear_agenda' %}" class="btn btn-success">Crear Nueva Agenda</a>
-    <a href="{% url 'agenda_list' %}" class="btn btn-secondary">Mis Agendas</a>
-    <a href="{% url 'historial_citas_profesional' %}" class="btn btn-secondary">Ver Historial de Citas</a>
-    <a href="{% url 'crear_cita_profesional' %}" class="btn btn-success">Crear Cita</a>
-    
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="display-5">👋 Bienvenido, {{ user.get_full_name }}</h1>
+        <p class="lead text-muted">Gestiona tus agendas y controla las citas de tus pacientes de manera eficiente.</p>
+    </div>
+
+    <!-- Acciones -->
+    <div class="row g-4">
+        <!-- Crear Nueva Agenda -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Crear Nueva Agenda</h5>
+                    <p class="card-text text-muted">Crea y organiza tus horarios de trabajo fácilmente.</p>
+                    <a href="{% url 'crear_agenda' %}" class="btn btn-success w-100">Crear Agenda</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mis Agendas -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt fa-3x text-secondary mb-3"></i>
+                    <h5 class="card-title">Mis Agendas</h5>
+                    <p class="card-text text-muted">Consulta y administra tus agendas creadas.</p>
+                    <a href="{% url 'agenda_list' %}" class="btn btn-secondary w-100">Ver Agendas</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Citas -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="fas fa-history fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Historial de Citas</h5>
+                    <p class="card-text text-muted">Consulta el historial de citas con tus pacientes.</p>
+                    <a href="{% url 'historial_citas_profesional' %}" class="btn btn-info w-100">Ver Historial</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crear Cita -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="fas fa-user-plus fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Crear Cita</h5>
+                    <p class="card-text text-muted">Programa nuevas citas con tus pacientes.</p>
+                    <a href="{% url 'crear_cita_profesional' %}" class="btn btn-warning w-100">Crear Cita</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
