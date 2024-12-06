@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView,DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
@@ -63,7 +63,14 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
         form.instance.usuario = self.request.user
         return super().form_valid(form)
 
+class PacienteDatosView(LoginRequiredMixin, DetailView):
+    model = Paciente
+    template_name = 'roles/datos_paciente.html'
+    context_object_name = 'paciente'
 
+    def get_object(self):
+        # Obtiene el paciente asociado al usuario autenticado
+        return get_object_or_404(Paciente, usuario=self.request.user)
 class PacienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Paciente
     form_class = PacienteForm

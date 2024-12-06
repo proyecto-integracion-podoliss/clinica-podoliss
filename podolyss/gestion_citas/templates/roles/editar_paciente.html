@@ -1,25 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>{% if object %}Editar Datos Personales{% else %}Completar Datos Personales{% endif %}</h2>
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            {{ form.tipo_documento.label_tag }}
-            {{ form.tipo_documento }}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center align-items-start">
+        <!-- Columna Izquierda: Tarjeta de datos actuales -->
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-lg" style="width: 90%; max-width: 500px; border-radius: 15px; background-color: #f9f9f9;">
+                <div class="card-header text-center" style="background-color: #4CAF50; color: white; border-radius: 15px 15px 0 0;">
+                    <h4>Datos Actuales</h4>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent border-0"><strong>Usuario:</strong> {{ paciente.usuario.username }}</li>
+                        <li class="list-group-item bg-transparent border-0"><strong>Documento de Identidad:</strong> {{ paciente.documento }}</li>
+                        <li class="list-group-item bg-transparent border-0"><strong>Tipo de Documento:</strong> {{ paciente.tipo_documento.nombre }}</li>
+                        <li class="list-group-item bg-transparent border-0"><strong>Previsión de Salud:</strong> {{ paciente.prevision.nombre }}</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            {{ form.documento.label_tag }}
-            {{ form.documento }}
-        </div>
-        <div class="mb-3">
-            {{ form.prevision.label_tag }}
-            {{ form.prevision }}
-        </div>
-        <button type="submit" class="btn btn-primary">{% if object %}Guardar Cambios{% else %}Crear Datos{% endif %}</button>
-        <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
 
-    </form>
+        <!-- Columna Derecha: Formulario de edición -->
+        <div class="col-md-5">
+            <div class="card shadow-lg" style="width: 90%; max-width: 500px; border-radius: 15px; background-color: #f9f9f9;">
+                <div class="card-header text-center" style="background-color: #607D8B; color: white; border-radius: 15px 15px 0 0;">
+                    <h4>{% if object %}Editar Datos Personales{% else %}Completar Datos Personales{% endif %}</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label" for="tipo_documento"><strong>Tipo de Documento:</strong></label>
+                            {{ form.tipo_documento }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="documento"><strong>Documento de Identidad:</strong></label>
+                            {{ form.documento }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="prevision"><strong>Previsión de Salud:</strong></label>
+                            {{ form.prevision }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mb-2">
+                            {% if object %}Guardar Cambios{% else %}Crear Datos{% endif %}
+                        </button>
+                        <a href="javascript:history.back()" class="btn btn-light w-100" style="border: 1px solid #ccc;">Regresar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

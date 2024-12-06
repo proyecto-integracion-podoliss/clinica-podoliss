@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from gestion_citas.views import CitaCreateByProfesionalView, LandingPageView, CustomLoginView, RegistroView, PacienteView, ProfesionalView, AgendaListView, CrearAgendaView, AgendaUpdateView, AgendaDeleteView, CitaCreateView, PacienteCreateView, PacienteUpdateView,PacienteHistorialCitasView,ProfesionalHistorialAgendasView, CitaListView, CitaUpdateView, CitaDeleteView
+from gestion_citas.views import CitaCreateByProfesionalView, LandingPageView,PacienteDatosView, CustomLoginView, RegistroView, PacienteView, ProfesionalView, AgendaListView, CrearAgendaView, AgendaUpdateView, AgendaDeleteView, CitaCreateView, PacienteCreateView, PacienteUpdateView,PacienteHistorialCitasView,ProfesionalHistorialAgendasView, CitaListView, CitaUpdateView, CitaDeleteView
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('registro/', RegistroView.as_view(), name='registro'),
     path('paciente/', PacienteView.as_view(), name='pagina_paciente'),
     path('paciente/crear/', PacienteCreateView.as_view(), name='crear_paciente'),
+    path('paciente/datos/', PacienteDatosView.as_view(), name='datos_paciente'),
     path('paciente/editar/', PacienteUpdateView.as_view(), name='editar_paciente'),
     path('profesional/', ProfesionalView.as_view(), name='pagina_profesional'),
     path('profesional/agendas/', AgendaListView.as_view(), name='agenda_list'),

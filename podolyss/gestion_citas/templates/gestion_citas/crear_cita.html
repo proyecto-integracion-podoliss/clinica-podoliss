@@ -1,43 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}" role="alert">
-                {{ message }}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Mensajes de alerta -->
+            {% if messages %}
+            <div class="messages mb-4">
+                {% for message in messages %}
+                    <div class="alert 
+                        {% if message.tags == 'error' %}alert-danger
+                        {% elif message.tags == 'success' %}alert-success
+                        {% else %}alert-info{% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+            {% endif %}
+
+            <div class="card shadow-lg" style=" max-width: 800px; border-radius: 15px;">
+                <div class="card-header text-center bg-primary text-white" style=" border-radius: 15px 15px 0 0;">
+                    <h3>Confirmar Cita</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.profesional.label_tag }}
+                            {{ form.profesional }}
+                        </div>
+                        <div class="mb-4">
+                            {{ form.fecha_cita.label_tag }}
+                            {{ form.fecha_cita }}
+                        </div>
+                        <div class="mb-4">
+                            {{ form.hora_cita.label_tag }}
+                            {{ form.hora_cita }}
+                        </div>
+                        {% if form.observaciones %}
+                        <div class="mb-4">
+                            {{ form.observaciones.label_tag }}
+                            {{ form.observaciones }}
+                        </div>
+                        {% endif %}
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success w-50">Confirmar</button>
+                            <a href="javascript:history.back()" class="btn btn-secondary w-40">Regresar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    {% else %}
-        <!-- Solo mostrar los errores del formulario si no hay mensajes -->
-        {{ form.non_field_errors }}
-    {% endif %}
-    <form method="post">
-
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="id_profesional" class="form-label">Profesional</label>
-            {{ form.profesional }}
-        </div>
-        <div class="mb-3">
-            <label for="id_fecha_cita" class="form-label">Fecha de la Cita</label>
-            {{ form.fecha_cita }}
-        </div>
-        <div class="mb-3">
-            <label for="id_hora_cita" class="form-label">Hora de la Cita</label>
-            {{ form.hora_cita }}
-        </div>
-        {% if form.observaciones %}
-        <div class="mb-3">
-            <label for="id_observaciones" class="form-label">Observaciones</label>
-            {{ form.observaciones }}
-        </div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary">Confirmar Cita</button>
-        <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
-
-    </form>
 </div>
 {% endblock %}

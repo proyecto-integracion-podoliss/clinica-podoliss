@@ -23,10 +23,11 @@ section {
 }
 
 footer {
+    background-color: #00509E; /* Color de fondo del footer */
+    color: white; /* Color del texto */
     text-align: center;
     padding: 1rem 0;
-    background: #333;
-    color: #fff;
+    margin-top: auto; /* Asegura que el footer se empuje hacia abajo */
 }
 
  /* Efectos de animación */
@@ -76,5 +77,59 @@ header img {
     width: 1000px;
     
     
+}
+.form-label {
+    color: #00509E;
+}
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #00509E;
+    box-shadow: 0px 0px 5px rgba(0, 80, 158, 0.5);
+}
+
+.card {
+    max-width: 300px; /* Ancho máximo reducido */
+    width: 100%;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.btn-primary {
+    background-color: #00509E;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #003366;
+}
+
+.btn-outline-secondary {
+    border-color: #bbb;
+    color: #555;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-secondary:hover {
+    border-color: #999;
+    color: #333;
+}
+
+/* Campos inválidos */
+.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Mensajes */
+.alert {
+    border-radius: 10px;
+    padding: 15px;
 }
 
