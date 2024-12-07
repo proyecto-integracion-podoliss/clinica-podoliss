@@ -1,5 +1,8 @@
 body {
+    height: 100%;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
     line-height: 1.6;
@@ -10,7 +13,7 @@ body {
 
 
 main {
-    
+    flex: 1;
     padding: 1rem;
     background: linear-gradient(to bottom, white, #87CEFA); /* #87CEFA es celeste */
     
@@ -20,9 +23,17 @@ section {
     margin: 1rem 0;
 
     
-}
 
+}
+        /* Estilo para garantizar que el footer esté al fondo */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
 footer {
+    position: fixed;
     background-color: #00509E; /* Color de fondo del footer */
     color: white; /* Color del texto */
     text-align: center;
@@ -133,3 +144,59 @@ header img {
     padding: 15px;
 }
 
+/* PROFESIONAL */
+/* Estilos específicos para profesionales */
+.profesional-page {
+    background-color: #f5f9ff; /* Fondo específico para profesionales */
+    color: #003366; /* Texto azul oscuro */
+}
+
+.profesional-page h1 {
+    color: #00509E; /* Títulos específicos */
+}
+
+.profesional-page .btn-primary {
+    background-color: #FFC107; /* Botones amarillos */
+    border-color: #FFC107;
+    color: #ffffff;
+}
+
+.profesional-page .btn-primary:hover {
+    background-color: #e0a806; /* Sombra en hover */
+    border-color: #e0a806;
+}
+
+.profesional-page .card {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra específica */
+    border-radius: 10px;
+}
+
+.profesional-page .card-title {
+    font-weight: bold;
+    color: #00509E; /* Azul para títulos */
+}
+/* PACIENTES */
+.paciente-page {
+    background-color: #ffffff; /* Fondo para pacientes */
+    color: #000000;
+}
+
+.paciente-page h1 {
+    color: #28A745; /* Verde para títulos */
+}
+
+.paciente-page .btn-primary {
+    background-color: #28A745; /* Botones verdes */
+    border-color: #28A745;
+    color: #ffffff;
+}
+
+.paciente-page .btn-primary:hover {
+    background-color: #1e7d34; /* Sombra en hover */
+    border-color: #1e7d34;
+}
+
+.paciente-page .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
+    border-radius: 8px;
+}

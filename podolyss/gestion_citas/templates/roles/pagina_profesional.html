@@ -4,57 +4,45 @@
 <div class="container mt-5">
     <!-- Encabezado -->
     <div class="text-center mb-5" data-aos="fade-down">
-        <h1 class="display-4 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">👋 Bienvenido, Señor {{ user.get_full_name }}</h1>
+        <h1 class="display-4 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">👨‍⚕️ Bienvenido, Señor {{ user.get_full_name }}</h1>
         <p class="lead text-muted" style="font-family: 'Roboto', sans-serif; font-size: 1.2rem;">
-            Como Profesional puedes gestionar tus agendas y controla las citas de tus pacientes de manera eficiente.
+            Administre sus agendas y controle las citas de sus pacientes con eficacia y profesionalismo.
         </p>
     </div>
 
     <!-- Tarjetas de Acciones -->
-    <div class="row g-4" style="background: linear-gradient(180deg, #f5f9ff, #e0f1ff); border-radius: 15px; padding: 20px;">
-        <!-- Crear Nueva Agenda -->
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="card h-100 shadow-lg text-center hover-card border-0">
-                <div class="card-body py-4">
-                    <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
-                    <h5 class="card-title fw-bold">Crear Nueva Agenda</h5>
-                    <p class="card-text text-muted">Crea y organiza tus horarios de trabajo fácilmente.</p>
-                    <a href="{% url 'crear_agenda' %}" class="btn btn-success w-100">Crear Agenda</a>
-                </div>
-            </div>
-        </div>
-
+    <div class="row g-4 bg-light p-4 rounded" style="box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);">
         <!-- Mis Agendas -->
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="card h-100 shadow-lg text-center hover-card border-0">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 shadow-sm text-center hover-card border-0">
                 <div class="card-body py-4">
-                    <i class="fas fa-calendar-alt fa-3x text-secondary mb-3"></i>
+                    <i class="fas fa-calendar-alt fa-3x text-success mb-3"></i>
                     <h5 class="card-title fw-bold">Mis Agendas</h5>
-                    <p class="card-text text-muted">Consulta y administra tus agendas creadas.</p>
-                    <a href="{% url 'agenda_list' %}" class="btn btn-secondary w-100">Ver Agendas</a>
+                    <p class="card-text text-muted">Consulte y gestione sus agendas médicas creadas.</p>
+                    <a href="{% url 'agenda_list' %}" class="btn btn-success w-100">Ver Agendas</a>
                 </div>
             </div>
         </div>
 
         <!-- Historial de Citas -->
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card h-100 shadow-lg text-center hover-card border-0">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 shadow-sm text-center hover-card border-0">
                 <div class="card-body py-4">
                     <i class="fas fa-history fa-3x text-info mb-3"></i>
                     <h5 class="card-title fw-bold">Historial de Citas</h5>
-                    <p class="card-text text-muted">Consulta el historial de citas con tus pacientes.</p>
+                    <p class="card-text text-muted">Revise las citas atendidas de sus pacientes.</p>
                     <a href="{% url 'historial_citas_profesional' %}" class="btn btn-info w-100">Ver Historial</a>
                 </div>
             </div>
         </div>
 
         <!-- Crear Cita -->
-        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="card h-100 shadow-lg text-center hover-card border-0">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="card h-100 shadow-sm text-center hover-card border-0">
                 <div class="card-body py-4">
                     <i class="fas fa-user-plus fa-3x text-warning mb-3"></i>
                     <h5 class="card-title fw-bold">Crear Cita</h5>
-                    <p class="card-text text-muted">Programa nuevas citas con tus pacientes.</p>
+                    <p class="card-text text-muted">Programe nuevas citas para sus pacientes.</p>
                     <a href="{% url 'crear_cita_profesional' %}" class="btn btn-warning w-100">Crear Cita</a>
                 </div>
             </div>
@@ -65,16 +53,16 @@
 
 {% block extra_scripts %}
 <script>
-    // Añade un efecto de escala y sombra al pasar el ratón sobre las tarjetas
+    // Animación hover para las tarjetas
     document.querySelectorAll('.hover-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'scale(1.05)';
-            card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+            card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.2)';
             card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
         });
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'scale(1)';
-            card.style.boxShadow = '0 5px 10px rgba(0, 0, 0, 0.1)';
+            card.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)';
         });
     });
 </script>

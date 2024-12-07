@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow" style="width: 100%; max-width: 600px;">
+        <div class="card-header bg-primary text-white text-center">
             <h2 class="mb-0">Crear Cita</h2>
         </div>
         <div class="card-body">
@@ -25,8 +25,8 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-                <div class="d-flex">
-                    <button type="submit" class="btn btn-success me-4">Confirmar Cita</button>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Confirmar Cita</button>
                     <a href="javascript:history.back()" class="btn btn-secondary">Regresar</a>
                 </div>
             </form>
