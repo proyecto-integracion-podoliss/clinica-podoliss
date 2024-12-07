@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView,DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
@@ -9,7 +9,7 @@ from django.shortcuts import redirect, get_object_or_404
 from .forms import CitaFormProfesional, RegistroForm, AgendaForm, CitaForm, PacienteForm
 from .models import Agenda, Cita, Paciente, Profesional, Centro
 from datetime import datetime
-from django.contrib import messages
+from django.contrib import messages  #sweet alert
 
 
 class LandingPageView(TemplateView):
@@ -63,7 +63,14 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
         form.instance.usuario = self.request.user
         return super().form_valid(form)
 
+class PacienteDatosView(LoginRequiredMixin, DetailView):
+    model = Paciente
+    template_name = 'roles/datos_paciente.html'
+    context_object_name = 'paciente'
 
+    def get_object(self):
+        # Obtiene el paciente asociado al usuario autenticado
+        return get_object_or_404(Paciente, usuario=self.request.user)
 class PacienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Paciente
     form_class = PacienteForm
@@ -180,10 +187,8 @@ class CitaCreateView(CreateView):
 
     def form_valid(self, form):
         try:
-            # Asociar automáticamente el paciente y el único centro disponible
             form.instance.paciente = self.request.user.paciente
-            form.instance.centro = Centro.objects.first()  # Asignar el único centro
-            # Verificar si el profesional tiene una agenda activa para la fecha seleccionada
+            form.instance.centro = Centro.objects.first()
             agenda_activa = Agenda.objects.filter(
                 profesional=form.instance.profesional,
                 fecha_inicio__lte=form.instance.fecha_cita,
@@ -192,12 +197,13 @@ class CitaCreateView(CreateView):
             ).exists()
             if not agenda_activa:
                 raise ValueError("El profesional no tiene una agenda activa para la fecha seleccionada.")
-
+            
             messages.success(self.request, "La cita se creó correctamente.")
             return super().form_valid(form)
         except Exception as e:
             messages.error(self.request, f"Error al crear la cita: {e}")
             return self.form_invalid(form)
+
 
     def get_success_url(self):
         # Redirigir según el rol del usuario

@@ -1,5 +1,8 @@
 body {
+    height: 100%;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
     line-height: 1.6;
@@ -10,7 +13,7 @@ body {
 
 
 main {
-    
+    flex: 1;
     padding: 1rem;
     background: linear-gradient(to bottom, white, #87CEFA); /* #87CEFA es celeste */
     
@@ -20,13 +23,22 @@ section {
     margin: 1rem 0;
 
     
-}
 
+}
+        /* Estilo para garantizar que el footer esté al fondo */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
 footer {
+    position: fixed;
+    background-color: #00509E; /* Color de fondo del footer */
+    color: white; /* Color del texto */
     text-align: center;
     padding: 1rem 0;
-    background: #333;
-    color: #fff;
+    margin-top: auto; /* Asegura que el footer se empuje hacia abajo */
 }
 
  /* Efectos de animación */
@@ -77,4 +89,114 @@ header img {
     
     
 }
+.form-label {
+    color: #00509E;
+}
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+}
 
+.form-control:focus, .form-select:focus {
+    border-color: #00509E;
+    box-shadow: 0px 0px 5px rgba(0, 80, 158, 0.5);
+}
+
+.card {
+    max-width: 300px; /* Ancho máximo reducido */
+    width: 100%;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.btn-primary {
+    background-color: #00509E;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #003366;
+}
+
+.btn-outline-secondary {
+    border-color: #bbb;
+    color: #555;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-secondary:hover {
+    border-color: #999;
+    color: #333;
+}
+
+/* Campos inválidos */
+.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Mensajes */
+.alert {
+    border-radius: 10px;
+    padding: 15px;
+}
+
+/* PROFESIONAL */
+/* Estilos específicos para profesionales */
+.profesional-page {
+    background-color: #f5f9ff; /* Fondo específico para profesionales */
+    color: #003366; /* Texto azul oscuro */
+}
+
+.profesional-page h1 {
+    color: #00509E; /* Títulos específicos */
+}
+
+.profesional-page .btn-primary {
+    background-color: #FFC107; /* Botones amarillos */
+    border-color: #FFC107;
+    color: #ffffff;
+}
+
+.profesional-page .btn-primary:hover {
+    background-color: #e0a806; /* Sombra en hover */
+    border-color: #e0a806;
+}
+
+.profesional-page .card {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra específica */
+    border-radius: 10px;
+}
+
+.profesional-page .card-title {
+    font-weight: bold;
+    color: #00509E; /* Azul para títulos */
+}
+/* PACIENTES */
+.paciente-page {
+    background-color: #ffffff; /* Fondo para pacientes */
+    color: #000000;
+}
+
+.paciente-page h1 {
+    color: #28A745; /* Verde para títulos */
+}
+
+.paciente-page .btn-primary {
+    background-color: #28A745; /* Botones verdes */
+    border-color: #28A745;
+    color: #ffffff;
+}
+
+.paciente-page .btn-primary:hover {
+    background-color: #1e7d34; /* Sombra en hover */
+    border-color: #1e7d34;
+}
+
+.paciente-page .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
+    border-radius: 8px;
+}
