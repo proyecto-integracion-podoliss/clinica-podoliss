@@ -112,7 +112,7 @@ header img {
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 .btn-primary {
-    background-color: #00509E;
+    /* background-color: #00509E; */
     border: none;
     transition: all 0.3s ease-in-out;
 }
@@ -156,13 +156,13 @@ header img {
 }
 
 .profesional-page .btn-primary {
-    background-color: #FFC107; /* Botones amarillos */
+    background-color: #00509E; /* Botones amarillos */
     border-color: #FFC107;
     color: #ffffff;
 }
 
 .profesional-page .btn-primary:hover {
-    background-color: #e0a806; /* Sombra en hover */
+    background-color: #00509E; /* Sombra en hover */
     border-color: #e0a806;
 }
 
@@ -200,3 +200,4 @@ header img {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
     border-radius: 8px;
 }
+

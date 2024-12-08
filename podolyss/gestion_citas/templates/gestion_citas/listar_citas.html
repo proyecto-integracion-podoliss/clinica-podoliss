@@ -15,7 +15,15 @@
                             <tr>
                                 <th style="width: 20%;">Fecha</th>
                                 <th style="width: 15%;">Hora</th>
-                                <th style="width: 35%;">Profesional/Paciente</th>
+                                <th style="width: 35%;">
+                                    {% if request.user.rol == 'paciente' %}
+                                        Profesional
+                                    {% elif request.user.rol == 'profesional' %}
+                                        Paciente
+                                    {% else %}
+                                        Información
+                                    {% endif %}
+                                </th>
                                 <th style="width: 15%;">Estado</th>
                                 <th style="width: 15%;">Acciones</th>
                             </tr>
@@ -34,8 +42,13 @@
                                 </td>
                                 <td>{{ cita.estado }}</td>
                                 <td class="text-center">
-                                    <a href="{% url 'cita_edit' cita.pk %}" class="btn btn-primary btn-sm">Editar</a>
-                                    <a href="{% url 'cita_delete' cita.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    <div class="btn-group" role="group" aria-label="Acciones">
+                                        <!-- <a href="{% url 'cita_edit' cita.pk %}" class="btn btn-primary btn-sm">Editar</a> -->
+                                        {% if request.user.rol == 'profesional' %}
+                                            <a href="{% url 'cita_edit' cita.pk %}" class="btn btn-warning btn-sm">Modificar</a>
+                                            {% endif %}
+                                            <a href="{% url 'cita_delete' cita.pk %}" class="btn btn-danger btn-sm">Cancelar</a>
+                                    </div>
                                 </td>
                             </tr>
                             {% empty %}
@@ -48,8 +61,23 @@
                 </div>
             </div>
             <div class="mt-4 text-center">
-                <a href="{% url 'pagina_paciente' %}" class="btn btn-secondary">Volver a la página principal</a>
-            </div>
+                <a href="{% if request.user.rol == 'paciente' %}
+                        {% url 'pagina_paciente' %}
+                    {% elif request.user.rol == 'profesional' %}
+                        {% url 'pagina_profesional' %}
+                    {% else %}
+                        {% url 'landing_page' %}
+                    {% endif %}" 
+                    class="btn btn-secondary">
+                    {% if request.user.rol == 'paciente' %}
+                        Volver a la página del paciente
+                    {% elif request.user.rol == 'profesional' %}
+                        Volver a la página del profesional
+                    {% else %}
+                        Ir a la página principal
+                    {% endif %}
+                </a>
+              </div>
         </div>
     </div>
 </div>
