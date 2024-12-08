@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>¿Estás seguro de que deseas eliminar esta agenda?</h2>
+    <p><strong>Profesional:</strong> {{ object.profesional }}</p>
+    <p><strong>Fecha:</strong> {{ object.fecha_inicio }} - {{ object.fecha_fin }}</p>
+    <p><strong>Hora:</strong> {{ object.hora_inicio }} - {{ object.hora_fin }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'agenda_list' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
