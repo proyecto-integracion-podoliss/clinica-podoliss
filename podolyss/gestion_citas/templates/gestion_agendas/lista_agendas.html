@@ -15,7 +15,7 @@
                                 <th>Hora de Inicio</th>
                                 <th>Hora de Fin</th>
                                 <th>Días Disponibles</th>
-                                <th>Capacidad Máxima</th>
+                                <!-- <th>Capacidad Máxima</th> -->
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -27,7 +27,7 @@
                                     <td>{{ agenda.hora_inicio }}</td>
                                     <td>{{ agenda.hora_fin }}</td>
                                     <td>{{ agenda.dias_disponibles }}</td>
-                                    <td>{{ agenda.capacidad_maxima }}</td>
+                                    <!-- <td>{{ agenda.capacidad_maxima }}</td> -->
                                     <td>
                                         <span class="badge {% if agenda.activo %}bg-success{% else %}bg-secondary{% endif %}">
                                             {{ agenda.activo|yesno:"Activa,Inactiva" }}
@@ -35,7 +35,7 @@
                                     </td>
                                     <td>
                                         <a href="{% url 'agenda_edit' agenda.id %}" class="btn btn-warning btn-sm">Editar</a>
-                                        <a href="{% url 'agenda_delete' agenda.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                        <a href="{% url 'agenda_delete' agenda.id %}" class="btn btn-danger btn-sm">Cancelar</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -49,7 +49,7 @@
             {% endif %}
 
             <div class="d-flex justify-content-between mt-4">
-                <a href="{% url 'crear_agenda' %}" class="btn btn-primary">Crear Nueva Agenda</a>
+                <a class="btn btn-primary" href="{% url 'crear_agenda' %}" role="button">Crear Nueva Agenda</a>
                 <a href="{% url 'pagina_profesional' %}" class="btn btn-secondary">Volver a la página principal</a>
 
             </div>

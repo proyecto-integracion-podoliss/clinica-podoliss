@@ -10,10 +10,10 @@
             </div>
 
             <!-- Formulario de Filtrado -->
-            <form method="get" action="" class="mb-4 d-flex justify-content-between align-items-center">
-                <label for="mes" class="form-label"><strong>Filtrar por mes:</strong></label>
-                <div class="d-flex align-items-center">
-                    <select name="mes" id="mes" class="form-select me-3" style="max-width: 350px;">
+            <form method="get" action="" class="d-flex justify-content-center align-items-center mb-4">
+                <label for="mes" class="form-label me-3"><strong>Filtrar por mes:</strong></label>
+                
+                    <select name="mes" id="mes" class="form-select me-3" style="min-width: 120px; width: auto;">
                         <option value="" disabled selected>Seleccione un mes</option>
                         {% for mes_num, mes_nombre in meses %}
                             <option value="{{ mes_num }}">{{ mes_nombre }}</option>
@@ -21,7 +21,7 @@
                         <option value="">Todos</option>
                     </select>
                     <button type="submit" class="btn btn-primary">Filtrar</button>
-                </div>
+                
             </form>
 
             <!-- Tabla de Citas -->
