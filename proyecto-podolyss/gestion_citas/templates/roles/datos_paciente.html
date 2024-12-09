@@ -17,7 +17,7 @@
             </div>
             <div class="card-footer text-center">
                 <a href="{% if user.paciente %}{% url 'editar_paciente' %}{% else %}{% url 'crear_paciente' %}{% endif %}" class="btn  w-50" style="background-color: #607D8B; color: white;">Modificar Datos</a>
-                <a href="javascript:history.back()" class="btn btn-light w-50" style="border: 1px solid #ccc;">Regresar</a>
+                <a href="{% url 'pagina_paciente' %}" class="btn btn-light w-50" style="border: 1px solid #ccc;">Regresar</a>
             </div>
         </div>
     </div>

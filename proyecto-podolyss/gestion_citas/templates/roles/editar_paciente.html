@@ -6,7 +6,7 @@
         <!-- Columna Izquierda: Tarjeta de datos actuales -->
         <div class="col-md-5 mb-4">
             <div class="card shadow-lg" style="width: 90%; max-width: 500px; border-radius: 15px; background-color: #f9f9f9;">
-                <div class="card-header text-center" style="background-color: #607D8B; color: white; border-radius: 15px 15px 0 0;"style="background-color: #4CAF50; color: white; border-radius: 15px 15px 0 0;">
+                <div class="card-header text-center" style="background-color: #607D8B; color: white; border-radius: 15px 15px 0 0;">
                     <h4>Datos Actuales</h4>
                 </div>
                 <div class="card-body p-4">
@@ -23,8 +23,8 @@
         <!-- Columna Derecha: Formulario de edición -->
         <div class="col-md-5">
             <div class="card shadow-lg" style="width: 90%; max-width: 500px; border-radius: 15px; background-color: #f9f9f9;">
-                    <div class="card-header text-center" style="background-color: #2c8045; color: white; border-radius: 15px 15px 0 0;"style="background-color: #4CAF50; color: white; border-radius: 15px 15px 0 0;">
-                    <h4>{% if object %}Editar Datos Personales{% else %}Completar Datos Personales{% endif %}</h4>  
+                <div class="card-header text-center" style="background-color: #2c8045; color: white; border-radius: 15px 15px 0 0;">
+                    <h4>{% if object %}Editar Datos Personales{% else %}Completar Datos Personales{% endif %}</h4>
                 </div>
                 <div class="card-body p-4">
                     <form method="post">
@@ -44,11 +44,28 @@
                         <button type="submit" class="btn btn-success w-100 mb-2">
                             {% if object %}Guardar Cambios{% else %}Crear Datos{% endif %}
                         </button>
-                        <a href="javascript:history.back()" class="btn btn-light w-100" style="border: 1px solid #ccc;">Regresar</a>
+                        <a href="javascript:history.back()" class="btn btn-outline-secondary w-100">Regresar</a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- SweetAlert para mostrar mensajes -->
+
+    {% if messages %}
+        {% for message in messages %}
+        <script>
+            Swal.fire({
+                icon: 'success', // Ícono de éxito
+                title: '¡Éxito!',
+                text: '{{ message }}',
+                showConfirmButton: false,
+                timer: 2000 // La alerta desaparecerá automáticamente después de 2 segundos
+            });
+        </script>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

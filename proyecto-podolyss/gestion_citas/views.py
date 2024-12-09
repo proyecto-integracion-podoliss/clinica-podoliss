@@ -10,6 +10,8 @@ from .forms import CitaFormProfesional, RegistroForm, AgendaForm, CitaForm, Paci
 from .models import Agenda, Cita, Paciente, Profesional, Centro
 from datetime import datetime
 from django.contrib import messages  #sweet alert
+from django.db.models import Q
+from django.utils.timezone import now
 
 
 class LandingPageView(TemplateView):
@@ -43,7 +45,7 @@ class RegistroView(CreateView):
     form_class = RegistroForm
     success_url = reverse_lazy('login') # Redirigir al login después del registro
 
-
+#CRUD DE PACIENTES.==============================
 @method_decorator(login_required, name='dispatch')
 class PacienteView(TemplateView):
     template_name = 'roles/pagina_paciente.html'
@@ -53,6 +55,7 @@ class PacienteView(TemplateView):
             return redirect('landing_page')
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(login_required, name='dispatch')    
 class PacienteCreateView(LoginRequiredMixin, CreateView):
     model = Paciente
     form_class = PacienteForm
@@ -63,6 +66,7 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
         form.instance.usuario = self.request.user
         return super().form_valid(form)
 
+@method_decorator(login_required, name='dispatch')
 class PacienteDatosView(LoginRequiredMixin, DetailView):
     model = Paciente
     template_name = 'roles/datos_paciente.html'
@@ -71,6 +75,8 @@ class PacienteDatosView(LoginRequiredMixin, DetailView):
     def get_object(self):
         # Obtiene el paciente asociado al usuario autenticado
         return get_object_or_404(Paciente, usuario=self.request.user)
+
+@method_decorator(login_required, name='dispatch')
 class PacienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Paciente
     form_class = PacienteForm
@@ -80,7 +86,11 @@ class PacienteUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return get_object_or_404(Paciente, usuario=self.request.user)
 
+    def form_valid(self, form):
+        messages.success(self.request, '¡Información actualizada con éxito!')
+        return super().form_valid(form)
 
+#CRUD DE PROFESIONES.==============================
 @method_decorator(login_required, name='dispatch')
 class ProfesionalView(TemplateView):
     template_name = 'roles/pagina_profesional.html'
@@ -90,34 +100,8 @@ class ProfesionalView(TemplateView):
             return redirect('landing_page')
         return super().dispatch(request, *args, **kwargs)
 
-
+#CRUD DE AGENDA.==================================
 @method_decorator(login_required, name='dispatch')
-class AgendaListView(ListView):
-    model = Agenda
-    template_name = 'gestion_agendas/lista_agendas.html'
-    context_object_name = 'agendas'
-
-    def get_queryset(self):
-        if self.request.user.rol == 'profesional':
-            return Agenda.objects.filter(profesional__usuario=self.request.user).order_by('fecha_inicio', 'hora_inicio')
-        return Agenda.objects.none()
-    
-
-@method_decorator(login_required, name='dispatch')
-class CrearAgendaView(CreateView):
-    model = Agenda
-    form_class = AgendaForm
-    template_name = 'gestion_agendas/crear_agenda.html'
-    success_url = reverse_lazy('pagina_profesional')
-
-    def form_valid(self, form):
-        if self.request.user.rol == 'profesional':
-            form.instance.profesional = self.request.user.profesional
-            return super().form_valid(form)
-        else:
-            return redirect('pagina_paciente')
-    
-
 class AgendaListView(LoginRequiredMixin, ListView):
     model = Agenda
     template_name = 'gestion_agendas/lista_agendas.html'
@@ -129,7 +113,7 @@ class AgendaListView(LoginRequiredMixin, ListView):
             return Agenda.objects.filter(profesional__usuario=self.request.user).order_by('fecha_inicio', 'hora_inicio')
         return Agenda.objects.none()  # Si no es profesional, no devuelve nada
     
-
+@method_decorator(login_required, name='dispatch')
 class CrearAgendaView(LoginRequiredMixin, CreateView):
     model = Agenda
     form_class = AgendaForm
@@ -140,10 +124,11 @@ class CrearAgendaView(LoginRequiredMixin, CreateView):
         # Asigna automáticamente el profesional al usuario autenticado
         if self.request.user.rol == 'profesional':
             form.instance.profesional = self.request.user.profesional
+            messages.success(self.request, '¡Agenda creada con éxito!')
             return super().form_valid(form)
         else:
+            messages.error(self.request, 'No tienes permisos para crear una agenda.')
             return redirect('pagina_paciente')  # Redirige si el usuario no es un profesional
-
 
 @method_decorator(login_required, name='dispatch')
 class AgendaUpdateView(UpdateView):
@@ -151,13 +136,33 @@ class AgendaUpdateView(UpdateView):
     fields = ['profesional', 'fecha_inicio', 'fecha_fin', 'hora_inicio', 'hora_fin', 'dias_disponibles', 'dias_excluidos', 'capacidad_maxima', 'activo']
     template_name = 'gestion_agendas/editar_agenda.html'
     success_url = reverse_lazy('agenda_list')
+    def form_valid(self, form):
+        # Envía un mensaje de éxito
+        messages.success(self.request, 'Agenda actualizada con éxito!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Envía un mensaje de error
+        messages.error(self.request, 'Hubo un error al intentar actualizar la agenta. Por favor, verifica los datos.')
+        return super().form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AgendaDeleteView(DeleteView):
     model = Agenda
     template_name = 'gestion_agendas/eliminar_agenda.html'
     success_url = reverse_lazy('agenda_list')
+    def form_valid(self, form):
+        # Envía un mensaje de éxito
+        messages.success(self.request, 'Agenda cancelada con éxito!')
+        return super().form_valid(form)
 
+    def form_invalid(self, form):
+        # Envía un mensaje de error
+        messages.error(self.request, 'Hubo un error al intentar actualizar la cita. Por favor, verifica los datos.')
+        return super().form_invalid(form)
+    
+
+#CRUD DE CITAS.=====================================
 @method_decorator(login_required, name='dispatch')
 class CitaListView(ListView):
     model = Cita
@@ -165,16 +170,27 @@ class CitaListView(ListView):
     context_object_name = 'citas'
 
     def get_queryset(self):
+        """
+        Filtrar las citas desde el día de hoy en adelante.
+        """
         user = self.request.user
+        fecha_hoy = now().date()  # Obtiene la fecha actual (sin hora)
+
         if user.rol == 'paciente':
-            return Cita.objects.filter(paciente__usuario=user).order_by('fecha_cita', 'hora_cita')
+            return Cita.objects.filter(
+                paciente__usuario=user,
+                fecha_cita__gte=fecha_hoy  # Filtra las citas a partir de hoy
+            ).order_by('fecha_cita', 'hora_cita')
         elif user.rol == 'profesional':
-            return Cita.objects.filter(profesional__usuario=user).order_by('fecha_cita', 'hora_cita')
-        return Cita.objects.none() #No mostrar citas si el usuario no tiene un rol válido
+            return Cita.objects.filter(
+                profesional__usuario=user,
+                fecha_cita__gte=fecha_hoy  # Filtra las citas a partir de hoy
+            ).order_by('fecha_cita', 'hora_cita')
+
+        return Cita.objects.none()  # No mostrar citas si el usuario no tiene un rol válido.
+
     
-
-from django.contrib import messages
-
+@method_decorator(login_required, name='dispatch')
 class CitaCreateView(CreateView):
     model = Cita
     form_class = CitaForm
@@ -198,10 +214,10 @@ class CitaCreateView(CreateView):
             if not agenda_activa:
                 raise ValueError("El profesional no tiene una agenda activa para la fecha seleccionada.")
             
-            messages.success(self.request, "La cita se creó correctamente.")
+            messages.success(self.request, "La solicitud se creó correctamente.")
             return super().form_valid(form)
         except Exception as e:
-            messages.error(self.request, f"Error al crear la cita: {e}")
+            messages.error(self.request, f"Lo sentimos: {e}")
             return self.form_invalid(form)
 
 
@@ -225,6 +241,16 @@ class CitaUpdateView(UpdateView):
         elif user.rol == 'profesional':
             return Cita.objects.filter(profesional__usuario=user)
         return Cita.objects.none()
+
+    def form_valid(self, form):
+        # Envía un mensaje de éxito
+        messages.success(self.request, '¡Cita actualizada con éxito!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Envía un mensaje de error
+        messages.error(self.request, 'Hubo un error al intentar actualizar la cita. Por favor, verifica los datos.')
+        return super().form_invalid(form)
     
 @method_decorator(login_required, name='dispatch')
 class CitaDeleteView(DeleteView):
@@ -239,7 +265,17 @@ class CitaDeleteView(DeleteView):
         elif user.rol == 'profesional':
             return Cita.objects.filter(profesional__usuario=user)
         return Cita.objects.none()
-    
+    def form_valid(self, form):
+        # Envía un mensaje de éxito
+        messages.success(self.request, '¡Cita Cancelada con exito!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Envía un mensaje de error
+        messages.error(self.request, 'Hubo un error al intentar actualizar la cita. Por favor, verifica los datos.')
+        return super().form_invalid(form)
+
+#HISTORIALES.============================================
 @method_decorator(login_required, name='dispatch')
 class PacienteHistorialCitasView(ListView):
     model = Cita
@@ -268,37 +304,85 @@ class PacienteHistorialCitasView(ListView):
         context['paginacion'] = True
         return context
     
+
 @method_decorator(login_required, name='dispatch')
-class ProfesionalHistorialAgendasView(ListView):
-    model = Agenda
+class ProfesionalHistorialCitasView(ListView):
+    model = Cita
     template_name = 'gestion_citas/historialprof.html'
-    context_object_name = 'agendas'
+    context_object_name = 'citas'
 
     def get_queryset(self):
-        # Filtra las agendas para el profesional autenticado
+        """
+        Filtra las citas asociadas al profesional autenticado por nombre de paciente y rango de fechas,
+        basado en la fecha de inicio de las citas.
+        """
         profesional = Profesional.objects.get(usuario=self.request.user)
-        queryset = Agenda.objects.filter(profesional=profesional).distinct().order_by('fecha_inicio', 'hora_inicio')
-        
-        # Filtro por mes si se proporciona
-        mes = self.request.GET.get('mes')
-        if mes:
+        queryset = Cita.objects.filter(profesional=profesional).select_related('paciente').order_by('-fecha_cita', '-hora_cita')
+
+        # Captura los parámetros del formulario
+        nombre_paciente = self.request.GET.get('nombre_paciente', '').strip()
+        fecha_inicio = self.request.GET.get('fecha_inicio')
+        fecha_fin = self.request.GET.get('fecha_fin')
+
+        # Filtrar por nombre del paciente
+        if nombre_paciente:
+            queryset = queryset.filter(paciente__usuario__first_name__icontains=nombre_paciente)
+
+        # Filtrar por rango de fechas basado en la fecha de inicio
+        if fecha_inicio and fecha_fin:
             try:
-                mes = int(mes)
-                queryset = queryset.filter(fecha_inicio__month=mes)
+                fecha_inicio_dt = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
+                fecha_fin_dt = datetime.strptime(fecha_fin, "%Y-%m-%d").date()
+
+                if fecha_inicio_dt > fecha_fin_dt:
+                    messages.error(self.request, "La fecha de inicio no puede ser mayor que la fecha de fin.")
+                else:
+                    # Filtro basado en fecha de inicio de la cita
+                    queryset = queryset.filter(fecha_cita__gte=fecha_inicio_dt, fecha_cita__lte=fecha_fin_dt)
             except ValueError:
-                pass
-        
+                messages.error(self.request, "Formato de fecha inválido. Por favor, seleccione fechas válidas.")
+
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['meses'] = [
-            (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
-            (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
-            (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre')
-        ]
-        return context
-        
+
+
+# @method_decorator(login_required, name='dispatch')
+# class ProfesionalHistorialCitasView(ListView):
+#     model = Cita
+#     template_name = 'gestion_citas/historialprof.html'
+#     context_object_name = 'citas'
+
+#     def get_queryset(self):
+#         # Filtra las citas para el profesional autenticado
+#         profesional = Profesional.objects.get(usuario=self.request.user)
+#         queryset = Cita.objects.filter(profesional=profesional).select_related('paciente', 'agenda').order_by('-fecha_cita', '-hora_cita')
+
+#         # Captura los parámetros del formulario
+#         nombre_paciente = self.request.GET.get('nombre_paciente', '').strip()
+#         fecha_inicio = self.request.GET.get('fecha_inicio')
+#         fecha_fin = self.request.GET.get('fecha_fin')
+
+#         # Filtrado por nombre del paciente
+#         if nombre_paciente:
+#             queryset = queryset.filter(
+#                 Q(paciente__usuario__first_name__icontains=nombre_paciente) |
+#                 Q(paciente__usuario__last_name__icontains=nombre_paciente)
+#             )
+
+#         # Filtrado por rango de fechas
+#         if fecha_inicio and fecha_fin:
+#             try:
+#                 fecha_inicio_dt = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
+#                 fecha_fin_dt = datetime.strptime(fecha_fin, "%Y-%m-%d").date()
+                
+#                 if fecha_inicio_dt > fecha_fin_dt:
+#                     messages.error(self.request, "La fecha de inicio no puede ser mayor que la fecha de fin.")
+#                 else:
+#                     queryset = queryset.filter(fecha_cita__gte=fecha_inicio_dt, fecha_cita__lte=fecha_fin_dt)
+#             except ValueError:
+#                 messages.error(self.request, "Formato de fecha inválido. Por favor, seleccione fechas válidas.")
+
+#         return queryset
 
 @method_decorator(login_required, name='dispatch')
 class CitaCreateByProfesionalView(CreateView):
