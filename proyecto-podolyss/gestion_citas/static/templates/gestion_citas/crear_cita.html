@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Mensajes de alerta -->
+            {% if messages %}
+            <div class="messages mb-4">
+                {% for message in messages %}
+                    <div class="alert 
+                        {% if message.tags == 'error' %}alert-danger
+                        {% elif message.tags == 'success' %}alert-success
+                        {% else %}alert-info{% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="card shadow-lg" style="min-width: 400px; max-width: 600px; width: 100%; max-height: 800px; min-height: 600px; border-radius: 15px;">
+                <div class="card-header text-center bg-primary text-white" style=" border-radius: 15px 15px 0 0;">
+                    <h3>Confirmar Cita</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.profesional.label_tag }}
+                            {{ form.profesional }}
+                        </div>
+                        <div class="mb-4">
+                            {{ form.fecha_cita.label_tag }}
+                            {{ form.fecha_cita }}
+                        </div>
+                        <div class="mb-4">
+                            {{ form.hora_cita.label_tag }}
+                            {{ form.hora_cita }}
+                        </div>
+                        {% if form.observaciones %}
+                        <div class="mb-4">
+                            {{ form.observaciones.label_tag }}
+                            {{ form.observaciones }}
+                        </div>
+                        {% endif %}
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success w-50">Confirmar</button>
+                            <a href="javascript:history.back()" class="btn btn-secondary w-40">Regresar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

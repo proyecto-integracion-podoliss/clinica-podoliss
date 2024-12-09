@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <div class="container-fluid mt-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="card shadow-lg" style="width: 90%; max-width: 500px; border-radius: 15px; background-color: #f9f9f9;">
+            <div class="card-header text-center" style="background-color:  #607D8B; color: white; border-radius: 15px 15px 0 0;">
+                <h3>Datos del Paciente</h3>
+            </div>
+            <div class="card-body p-4">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Usuario:</strong> {{ paciente.usuario.username }}</li>
+                    <li class="list-group-item"><strong>Número de Historia Clínica (NHC):</strong> {{ paciente.nhc }}</li>
+                    <li class="list-group-item"><strong>Documento de Identidad:</strong> {{ paciente.documento }}</li>
+                    <li class="list-group-item"><strong>Tipo de Documento:</strong> {{ paciente.tipo_documento.nombre }}</li>
+                    <li class="list-group-item"><strong>Previsión de Salud:</strong> {{ paciente.prevision.nombre }}</li>
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% if user.paciente %}{% url 'editar_paciente' %}{% else %}{% url 'crear_paciente' %}{% endif %}" class="btn  w-50" style="background-color: #607D8B; color: white;">Modificar Datos</a>
+                <a href="{% url 'pagina_paciente' %}" class="btn btn-light w-50" style="border: 1px solid #ccc;">Regresar</a>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5" data-aos="fade-down">
+        <h1 class="display-4 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">👋 Bienvenido, {{ user.get_full_name }}</h1>
+        <p class="lead text-muted" style="font-family: 'Roboto', sans-serif; font-size: 1.2rem;">Nuestros pacientes pueden administrar su propia información personal y revisar sus citas con facilidad.</p>
+    </div>
+
+    <div class="row g-4" style="background: linear-gradient(180deg, #f5f9ff, #e0f1ff); border-radius: 15px; padding: 20px;">
+        <!-- Datos Personales -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 shadow-lg text-center hover-card border-0">
+                <div class="card-body py-4">
+                    <i class="fas fa-user-edit fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title fw-bold">Datos Personales</h5>
+                    <p class="card-text text-muted">Edita o completa tu información personal.</p>
+                    <a href="{% if user.paciente %}{% url 'datos_paciente' %}{% else %}{% url 'crear_paciente' %}{% endif %}" class="btn btn-warning w-100">Gestionar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agendar Cita -->
+        <!-- <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 shadow-lg text-center hover-card border-0">
+                <div class="card-body py-4">
+                    <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
+                    <h5 class="card-title fw-bold">Agendar Cita</h5>
+                    <p class="card-text text-muted">Reserva una cita con nuestros especialistas.</p>
+                    <a href="{% url 'cita_create' %}" class="btn btn-success w-100">Agendar</a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Ver Citas -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 shadow-lg text-center hover-card border-0">
+                <div class="card-body py-4">
+                    <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">Mis Citas</h5>
+                    <p class="card-text text-muted">Consulta las citas programadas.</p>
+                    <a href="{% url 'cita_list' %}" class="btn btn-primary w-100">Ver Citas</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Citas -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="card h-100 shadow-lg text-center hover-card border-0">
+                <div class="card-body py-4">
+                    <i class="fas fa-history fa-3x text-secondary mb-3"></i>
+                    <h5 class="card-title fw-bold">Historial de Citas</h5>
+                    <p class="card-text text-muted">Consulta tus citas pasadas.</p>
+                    <a href="{% url 'historial_citas_paciente' %}" class="btn btn-secondary w-100">Ver Historial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+    // Añade un efecto de escala y sombra al pasar el ratón sobre las tarjetas
+    document.querySelectorAll('.hover-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'scale(1.05)';
+            card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+            card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'scale(1)';
+            card.style.boxShadow = '0 5px 10px rgba(0, 0, 0, 0.1)';
+        });
+    });
+</script>
+{% endblock %}

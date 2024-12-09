@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-5 " style="min-height: 80vh;">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h2 class="text-center text-primary mb-4">Mis Agendas</h2>
+
+            {% if agendas %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered text-center">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora de Inicio</th>
+                                <th>Hora de Fin</th>
+                                <th>Días Disponibles</th>
+                                <!-- <th>Capacidad Máxima</th> -->
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for agenda in agendas %}
+                                <tr>
+                                    <td>{{ agenda.fecha_inicio }} - {{ agenda.fecha_fin }}</td>
+                                    <td>{{ agenda.hora_inicio }}</td>
+                                    <td>{{ agenda.hora_fin }}</td>
+                                    <td>{{ agenda.dias_disponibles }}</td>
+                                    <!-- <td>{{ agenda.capacidad_maxima }}</td> -->
+                                    <td>
+                                        <span class="badge {% if agenda.activo %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {{ agenda.activo|yesno:"Activa,Inactiva" }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'agenda_edit' agenda.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                        <a href="{% url 'agenda_delete' agenda.id %}" class="btn btn-danger btn-sm">Cancelar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <p>No tienes agendas creadas.</p>
+                </div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between mt-4">
+                <a class="btn btn-primary" href="{% url 'crear_agenda' %}" role="button">Crear Nueva Agenda</a>
+                <a href="{% url 'pagina_profesional' %}" class="btn btn-secondary">Volver a la página principal</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

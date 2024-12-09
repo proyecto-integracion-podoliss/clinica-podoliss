@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main>
+    <!-- Hero Section -->
+    <section id="hero" class="text-center py-5" style="background: linear-gradient(135deg, #00509E, #0288D1); color: white;">
+        <div class="container">
+            <h1 class="display-4 fw-bold" style="font-family: 'Poppins', sans-serif;">Bienvenido a Podolisse</h1>
+            <p class="lead mb-4" style="font-family: 'Roboto', sans-serif;">Atención podológica integral con soluciones avanzadas.</p>
+            <a href="#servicios" class="btn btn-light btn-lg px-4 py-2 shadow">Descubre nuestros servicios</a>
+        </div>
+        <img src="{% static 'images/Podolyss.png' %}" alt="Descripción de la imagen" class="img-fluid">
+    </section>
+
+    <!-- ¿Qué hacemos? -->
+    <section id="servicios" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-primary fw-bold" style="font-family: 'Poppins', sans-serif;">¿Qué hacemos?</h2>
+                <p class="text-muted" style="font-family: 'Roboto', sans-serif; font-size: 1.2rem;">Soluciones innovadoras para optimizar tu experiencia podológica.</p>
+            </div>
+            <div class="row gy-5">
+                <div class="col-md-4">
+                    <div class="p-4 rounded shadow bg-white h-100 animate-on-scroll" style="border-left: 5px solid #00509E;">
+                        <h4 class="fw-bold text-primary mb-3">Gestión de pacientes</h4>
+                        <p>Organizamos y administramos información de manera eficiente para una atención de calidad.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 rounded shadow bg-white h-100 animate-on-scroll" style="border-left: 5px solid #28A745;">
+                        <h4 class="fw-bold text-success mb-3">Agendamiento intuitivo</h4>
+                        <p>Facilitamos el proceso de reservas con una experiencia rápida y segura para pacientes y profesionales.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 rounded shadow bg-white h-100 animate-on-scroll" style="border-left: 5px solid #FFC107;">
+                        <h4 class="fw-bold text-warning mb-3">Notificaciones y recordatorios</h4>
+                        <p>Recordatorios automáticos para mantener a tus usuarios informados de sus citas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section id="testimonios" class="py-5 text-center" style="background: linear-gradient(135deg, #F5F9FF, #E3F2FD);">
+        <div class="container">
+            <h2 class="text-primary fw-bold mb-4" style="font-family: 'Poppins', sans-serif;">Testimonios</h2>
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <div class="bg-light p-4 rounded shadow-sm h-100 animate-on-scroll">
+                        <p class="mb-3 text-muted" style="font-style: italic;">"Gracias al sistema, agendar y organizar mis pacientes es mucho más fácil."</p>
+                        <h5 class="fw-bold mb-0">Dr. Juan Pérez</h5>
+                        <span class="text-muted">Podólogo</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-light p-4 rounded shadow-sm h-100 animate-on-scroll">
+                        <p class="mb-3 text-muted" style="font-style: italic;">"Los recordatorios me han ayudado a no perder ninguna cita importante."</p>
+                        <h5 class="fw-bold mb-0">María González</h5>
+                        <span class="text-muted">Paciente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Widget de Testimonios -->
+    <section class="py-5 text-center bg-light">
+        <div class="container">
+            <div class="senja-embed" data-id="59e948b2-9c5c-4ac4-a448-cd1370d24b8e" data-lazyload="false"></div>
+            <script async type="text/javascript" src="https://static.senja.io/dist/platform.js"></script>
+        </div>
+    </section>
+</main>
+
+<!-- Custom JavaScript for Animations -->
+<script>
+    // Función para activar animaciones al hacer scroll
+    document.addEventListener("DOMContentLoaded", function () {
+        const elements = document.querySelectorAll(".animate-on-scroll");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate-fade-in");
+                }
+            });
+        }, { threshold: 0.2 });
+
+        elements.forEach(element => observer.observe(element));
+    });
+</script>
+
+<!-- Custom CSS -->
+<style>
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-fade-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+{% endblock %}
